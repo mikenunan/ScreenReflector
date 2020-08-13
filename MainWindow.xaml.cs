@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -18,6 +20,7 @@ namespace ScreenReflector
         private Matrix _transformToDevice;
         private bool _shown;
         private DispatcherTimer _timer;
+        private int _timerTickCount;
 
         public MainWindow()
         {
@@ -57,6 +60,8 @@ namespace ScreenReflector
         private void OnTimerTick(object sender, EventArgs e)
         {
             if (!IsActive)
+            var sw = new Stopwatch();
+            sw.Start();
                 return;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
             var pixelPosition = (System.Windows.Point)_transformToDevice.Transform((Vector)new System.Windows.Point(Left, screenHeight - Top - Height));
@@ -70,6 +75,7 @@ namespace ScreenReflector
             graphics.CopyFromScreen(pixelPositionX, pixelPositionY, 0, 0, new System.Drawing.Size(pixelSizeWidth, pixelSizeWidth));
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
             Image.Source = ToBitmapSource(bitmap, pixelSizeWidth, pixelSizeHeight);
+            Trace.WriteLine($"Stopwatch {sw.ElapsedMilliseconds} {Thread.CurrentThread.ManagedThreadId}");
         }
 
         private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
