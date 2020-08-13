@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScreenReflector"
         mc:Ignorable="d"
         WindowStyle="None" MouseDown="MainWindow_OnMouseDown"
-        Title="Screen Reflector" Top="0" Left="200" Height="200" Width="3000">
+        Title="Screen Reflector" Top="0" Left="200" Height="110" Width="3000">
     <WindowChrome.WindowChrome>
         <WindowChrome
             CaptionHeight="1"
