@@ -32,7 +32,7 @@ namespace ScreenReflector
             _shown = true;
             var compositionTarget = PresentationSource.FromVisual(this)?.CompositionTarget ?? throw new Exception("Failed to get real window details");
             _transformToDevice = compositionTarget.TransformToDevice;
-            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(200), DispatcherPriority.Background, OnTimerTick, Dispatcher.CurrentDispatcher);
+            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(50), DispatcherPriority.Background, OnTimerTick, Dispatcher.CurrentDispatcher);
         }
 
         [DllImport("gdi32.dll")]
@@ -56,9 +56,10 @@ namespace ScreenReflector
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            if (IsActive)
+            if (!IsActive)
                 return;
-            var pixelPosition = (System.Windows.Point)_transformToDevice.Transform((Vector)new System.Windows.Point(Left, Top));
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            var pixelPosition = (System.Windows.Point)_transformToDevice.Transform((Vector)new System.Windows.Point(Left, screenHeight - Top - Height));
             var pixelPositionX = (int)pixelPosition.X;
             var pixelPositionY = (int)pixelPosition.Y;
             var pixelSize = (System.Windows.Size)_transformToDevice.Transform((Vector)new System.Windows.Size(Width, Height));
