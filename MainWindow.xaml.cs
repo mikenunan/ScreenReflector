@@ -68,6 +68,7 @@ namespace ScreenReflector
             using var bitmap = new Bitmap(pixelSizeWidth, pixelSizeHeight);
             using var graphics = Graphics.FromImage(bitmap);
             graphics.CopyFromScreen(pixelPositionX, pixelPositionY, 0, 0, new System.Drawing.Size(pixelSizeWidth, pixelSizeWidth));
+            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
             Image.Source = ToBitmapSource(bitmap, pixelSizeWidth, pixelSizeHeight);
         }
 
