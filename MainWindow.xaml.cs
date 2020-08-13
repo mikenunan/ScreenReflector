@@ -59,9 +59,9 @@ namespace ScreenReflector
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            if (!IsActive)
             var sw = new Stopwatch();
             sw.Start();
+            if (_timerTickCount++ % 50 != 0 && !IsActive)
                 return;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
             var pixelPosition = (System.Windows.Point)_transformToDevice.Transform((Vector)new System.Windows.Point(Left, screenHeight - Top - Height));
